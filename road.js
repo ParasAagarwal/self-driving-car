@@ -18,7 +18,7 @@ class Road {
     this.borders = [
       [topLeft, bottomLeft],
       [topRight, bottomRight],
-    ];
+    ];//defining the borders of the road
   }
 
   getLaneCenter(laneIndex) {
@@ -35,7 +35,7 @@ class Road {
     ctx.strokeStyle = "white";
 
     for (let i = 1; i <= this.laneCount - 1; i++) {
-      const x = this.left + (i * this.width) / this.laneCount; //calculating the x position of each lane, could have also used lerp(linear interpolation)
+      const x = lerp(this.left, this.right, i / this.laneCount); //calculating the x position of each lane using linear interpolation
 
       ctx.setLineDash([20, 20]);
       ctx.beginPath(); //clears the current path in the canvas and begins a new path
@@ -50,6 +50,6 @@ class Road {
       ctx.moveTo(border[0].x, border[0].y);
       ctx.lineTo(border[1].x, border[1].y);
       ctx.stroke();
-    });
+    }); // iterates over each border, starts a new path and draws a line from the first point to the second point i.e. draws the border
   }
 }
