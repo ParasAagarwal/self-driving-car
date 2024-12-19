@@ -11,6 +11,7 @@ class Car {
     this.maxSpeed = 3;
     this.friction = 0.05;
     this.angle = 0; //avoiding direct left and right movement of car , instead it will rotate and move
+    this.damaged = false;
 
     this.sensor = new Sensor(this);
 
@@ -20,11 +21,47 @@ class Car {
 
   // Update the car's state
   update(roadBorders) {
-    this.#move();
+    if (!this.damaged) {// we are checking if the car is damaged or not, if it is damaged then we will not move the car
+      this.#move();
+      this.polygon = this.#createPolygon();
+      this.damaged = this.#assessDamage(roadBorders);
+    }
     this.sensor.update(roadBorders);
   }
 
-  // Private method to move the car based on controls
+  #assessDamage(roadBorders) {
+    for (let i = 0; i < roadBorders.length; i++) {
+      if (polysIntersect(this.polygon, roadBorders[i])) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  #createPolygon() {
+    // this method creates a polygon around the car to detect collision with road borders
+    const points = [];
+    const rad = Math.hypot(this.width, this.height) / 2; //radius from center to any corner of the car
+    const alpha = Math.atan2(this.width, this.height); // arc tangent method gives the angle in radians whose tangent is the quotient of two specified numbers
+    points.push({
+      x: this.x - Math.sin(this.angle - alpha) * rad,
+      y: this.y - Math.cos(this.angle - alpha) * rad,
+    }); //top right point
+    points.push({
+      x: this.x - Math.sin(this.angle + alpha) * rad,
+      y: this.y - Math.cos(this.angle + alpha) * rad,
+    }); //top left point
+    points.push({
+      x: this.x - Math.sin(Math.PI + this.angle - alpha) * rad,
+      y: this.y - Math.cos(Math.PI + this.angle - alpha) * rad,
+    }); //bottom right point
+    points.push({
+      x: this.x - Math.sin(Math.PI + this.angle + alpha) * rad,
+      y: this.y - Math.cos(Math.PI + this.angle + alpha) * rad,
+    }); // bottom left point
+    return points;
+  }
+
   #move() {
     // increase or decrease the speed by adding or subtracting acceleration based on forward and reverse controls
     if (this.controls.forward) {
@@ -71,15 +108,18 @@ class Car {
 
   // Draw the car on the canvas
   draw(ctx) {
-    ctx.save();
-    ctx.translate(this.x, this.y);
-    ctx.rotate(-this.angle); //for rotation of car based on left or right key press
-
+    if (this.damaged) {
+      ctx.fillStyle = "gray";
+    } else {
+      ctx.fillStyle = "black";
+    } // there is intersection of car with road borders or cars, then color of car will be gray
     ctx.beginPath();
-    ctx.rect(-this.width / 2, -this.height / 2, this.width, this.height);
+    ctx.moveTo(this.polygon[0].x, this.polygon[0].y);
+    for (let i = 1; i < this.polygon.length; i++) {
+      ctx.lineTo(this.polygon[i].x, this.polygon[i].y);
+    } //drawing the polygon around the car
     ctx.fill();
 
-    ctx.restore(); //restores the canvas to its original state before translation and rotation for next frame
     this.sensor.draw(ctx);
   }
 }
