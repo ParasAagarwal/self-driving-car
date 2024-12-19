@@ -1,13 +1,21 @@
 class Controls {
-  constructor() {
+  constructor(type) {
     // Initialize control states
     this.forward = false;
     this.left = false;
     this.right = false;
     this.reverse = false;
 
-    // Add keyboard event listeners
-    this.#addKeyboardListeners();
+    switch (
+      type //switch case to check the type of control dummy or keys car(main)
+    ) {
+      case "KEYS":
+        this.#addKeyboardListeners();
+        break;
+      case "DUMMY":
+        this.forward = true;
+        break;
+    }
   }
 
   // Private method to add keyboard event listeners

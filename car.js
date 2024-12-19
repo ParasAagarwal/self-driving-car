@@ -1,5 +1,5 @@
 class Car {
-  constructor(x, y, width, height) {
+  constructor(x, y, width, height, controlType, maxSpeed = 3) {
     // Initialize car properties
     this.x = x;
     this.y = y;
@@ -8,33 +8,44 @@ class Car {
 
     this.speed = 0;
     this.acceleration = 0.2;
-    this.maxSpeed = 3;
+    this.maxSpeed = maxSpeed;
     this.friction = 0.05;
     this.angle = 0; //avoiding direct left and right movement of car , instead it will rotate and move
     this.damaged = false;
 
-    this.sensor = new Sensor(this);
+    if (controlType != "DUMMY") {
+      this.sensor = new Sensor(this);
+    } //if the control type is not dummy then only we will create a sensor object for the car
 
     // Create a new Controls object to handle user input
-    this.controls = new Controls();
+    this.controls = new Controls(controlType);
   }
 
   // Update the car's state
-  update(roadBorders) {
-    if (!this.damaged) {// we are checking if the car is damaged or not, if it is damaged then we will not move the car
+  update(roadBorders, traffic) {
+    if (!this.damaged) {
+      // we are checking if the car is damaged or not, if it is damaged then we will not move the car
       this.#move();
       this.polygon = this.#createPolygon();
-      this.damaged = this.#assessDamage(roadBorders);
+      this.damaged = this.#assessDamage(roadBorders, traffic);
     }
-    this.sensor.update(roadBorders);
+    if (this.sensor) {
+      this.sensor.update(roadBorders, traffic);
+    } //if the sensor exists then only we will update the sensor
   }
 
-  #assessDamage(roadBorders) {
+  #assessDamage(roadBorders, traffic) {
     for (let i = 0; i < roadBorders.length; i++) {
       if (polysIntersect(this.polygon, roadBorders[i])) {
         return true;
       }
-    }
+    } //checking the intersection of car with road borders
+
+    for (let i = 0; i < traffic.length; i++) {
+      if (polysIntersect(this.polygon, traffic[i].polygon)) {
+        return true;
+      }
+    } //checking the intersection of car with traffic cars
     return false;
   }
 
@@ -107,11 +118,11 @@ class Car {
   }
 
   // Draw the car on the canvas
-  draw(ctx) {
+  draw(ctx, color) {
     if (this.damaged) {
       ctx.fillStyle = "gray";
     } else {
-      ctx.fillStyle = "black";
+      ctx.fillStyle = color;
     } // there is intersection of car with road borders or cars, then color of car will be gray
     ctx.beginPath();
     ctx.moveTo(this.polygon[0].x, this.polygon[0].y);
@@ -120,6 +131,8 @@ class Car {
     } //drawing the polygon around the car
     ctx.fill();
 
-    this.sensor.draw(ctx);
+    if (this.sensor) {
+      this.sensor.draw(ctx);
+    } //if the sensor exists then only we will draw the sensor
   }
 }
