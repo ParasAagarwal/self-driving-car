@@ -133,7 +133,7 @@ class Car {
   }
 
   // Draw the car on the canvas
-  draw(ctx, color) {
+  draw(ctx, color, drawSensor = false) {
     if (this.damaged) {
       ctx.fillStyle = "gray";
     } else {
@@ -146,7 +146,7 @@ class Car {
     } //drawing the polygon around the car
     ctx.fill();
 
-    if (this.sensor) {
+    if (this.sensor && drawSensor) {
       this.sensor.draw(ctx);
     } //if the sensor exists then only we will draw the sensor
   }
