@@ -52,3 +52,9 @@ function getRGBA(value) {
   const B = value > 0 ? 0 : 255; // for negative value
   return "rgba(" + R + "," + G + "," + B + "," + alpha + ")";
 } //function to get the color of the weights of the neural network based on the value of the weight
+
+
+function getRandomColor() {
+  const hue = 290 + Math.random() * 260;
+  return "hsl(" + hue + ", 100%, 60%)";
+} //function to get a random color for the car , except blue as our car in blue
