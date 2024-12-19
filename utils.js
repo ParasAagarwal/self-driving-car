@@ -43,3 +43,12 @@ function polysIntersect(poly1, poly2) {
   }
   return false;
 } //checking the intersection of two polygons i.e. car and road borders or car and car
+
+function getRGBA(value) {
+  // red green blue alpha for coloring the weights of the neural network
+  const alpha = Math.abs(value); // between -1 and 1 as it is weight after all
+  const R = value < 0 ? 0 : 255;
+  const G = R; //if the value of alpha is positive then red will be 255 and green will be 255 which will give yellow color on overlaying red and green, if negative then it becomes 0, hence both red and green hides
+  const B = value > 0 ? 0 : 255; // for negative value
+  return "rgba(" + R + "," + G + "," + B + "," + alpha + ")";
+} //function to get the color of the weights of the neural network based on the value of the weight
