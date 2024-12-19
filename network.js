@@ -13,6 +13,24 @@ class NeuralNetwork {
     } //feeding the outputs of the previous level to the next level
     return outputs;
   }
+
+  static mutate(network, amount = 1) {
+    // mutating i.e. changing weights of other simulations by a little amount from the best simulation
+    network.levels.forEach((level) => {
+      for (let i = 0; i < level.biases.length; i++) {
+        level.biases[i] = lerp(level.biases[i], Math.random() * 2 - 1, amount); // changing the biases of the network, starting from the bias of levels to random value between -1 and 1
+      }
+      for (let i = 0; i < level.weights.length; i++) {
+        for (let j = 0; j < level.weights[i].length; j++) {
+          level.weights[i][j] = lerp(
+            level.weights[i][j],
+            Math.random() * 2 - 1,
+            amount
+          );
+        }
+      } //changing the weights of the network, starting from the weights of levels to random value between -1 and 1
+    });
+  } // if the amount is 1 then the weights and biases will be changed to a random value between -1 and 1, if the amount is 0 then the weights and biases will remain the same
 }
 
 class Level {
