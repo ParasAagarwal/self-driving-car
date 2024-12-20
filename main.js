@@ -11,8 +11,8 @@ const networkCtx = networkCanvas.getContext("2d");
 
 const road = new Road(carCanvas.width / 2, carCanvas.width * 0.9);
 
-const N = 20;
-const cars = generateCars(N);
+let N = 1;
+let cars = generateCars(N);
 let bestCar = cars[0];
 if (localStorage.getItem("bestBrain")) {
   for (let i = 0; i < cars.length; i++) {
@@ -37,28 +37,9 @@ const traffic = [
   new Car(road.getLaneCenter(2), -1100, 30, 50, "DUMMY", 2, getRandomColor()),
   new Car(road.getLaneCenter(2), -1300, 30, 50, "DUMMY", 2, getRandomColor()),
   new Car(road.getLaneCenter(0), -1300, 30, 50, "DUMMY", 2, getRandomColor()),
-  new Car(road.getLaneCenter(2), -1400, 30, 50, "DUMMY", 2, getRandomColor()),
-  new Car(road.getLaneCenter(1), -1500, 30, 50, "DUMMY", 2, getRandomColor()),
-  new Car(road.getLaneCenter(2), -1500, 30, 50, "DUMMY", 2, getRandomColor()),
 ];
 
-animate();
-
-function save() {
-  localStorage.setItem("bestBrain", JSON.stringify(bestCar.brain));
-} //setting the best car in localstorage
-
-function discard() {
-  localStorage.removeItem("bestBrain");
-}
-
-function generateCars(N) {
-  const cars = [];
-  for (let i = 1; i <= N; i++) {
-    cars.push(new Car(road.getLaneCenter(1), 100, 30, 50, "AI"));
-  }
-  return cars;
-}
+let animationFrameId;
 
 // Function to update and redraw the car
 function animate(time) {
@@ -93,5 +74,143 @@ function animate(time) {
 
   networkCtx.lineDashOffset = -time / 50; // time is a parameter of the animate function, it is the time elapsed since the page loaded and is passed to the animate function by the requestAnimationFrame function
   Visualizer.drawNetwork(networkCtx, bestCar.brain); //drawing the neural network of the car
-  requestAnimationFrame(animate); //this is a recursive function, calls the animate function again and again making it look like an animation
+  animationFrameId = requestAnimationFrame(animate); // Recursive call to animate
+}
+
+// Start the animation
+animationFrameId = requestAnimationFrame(animate);
+
+function save() {
+  localStorage.setItem("bestBrain", JSON.stringify(bestCar.brain));
+} //setting the best car in localstorage
+
+function discard() {
+  localStorage.removeItem("bestBrain");
+}
+
+function generateCars(N) {
+  const cars = [];
+  for (let i = 1; i <= N; i++) {
+    cars.push(new Car(road.getLaneCenter(1), 100, 30, 50, "AI"));
+  }
+  return cars;
+}
+
+function updateCarCount() {
+  const carCountInput = document.getElementById("carCount");
+  N = parseInt(carCountInput.value);
+  cars = generateCars(N);
+  bestCar = cars[0];
+  if (localStorage.getItem("bestBrain")) {
+    for (let i = 0; i < cars.length; i++) {
+      cars[i].brain = JSON.parse(localStorage.getItem("bestBrain"));
+      if (i != 0) {
+        NeuralNetwork.mutate(cars[i].brain, 0.1);
+      }
+    }
+  }
+  // Reset the traffic to the predefined traffic
+  traffic.length = 0;
+  traffic.push(
+    new Car(road.getLaneCenter(1), -100, 30, 50, "DUMMY", 2, getRandomColor()),
+    new Car(road.getLaneCenter(0), -300, 30, 50, "DUMMY", 2, getRandomColor()),
+    new Car(road.getLaneCenter(2), -300, 30, 50, "DUMMY", 2, getRandomColor()),
+    new Car(road.getLaneCenter(0), -500, 30, 50, "DUMMY", 2, getRandomColor()),
+    new Car(road.getLaneCenter(1), -500, 30, 50, "DUMMY", 2, getRandomColor()),
+    new Car(road.getLaneCenter(1), -700, 30, 50, "DUMMY", 2, getRandomColor()),
+    new Car(road.getLaneCenter(2), -700, 30, 50, "DUMMY", 2, getRandomColor()),
+    new Car(road.getLaneCenter(0), -900, 30, 50, "DUMMY", 2, getRandomColor()),
+    new Car(road.getLaneCenter(2), -900, 30, 50, "DUMMY", 2, getRandomColor()),
+    new Car(road.getLaneCenter(1), -1100, 30, 50, "DUMMY", 2, getRandomColor()),
+    new Car(road.getLaneCenter(2), -1100, 30, 50, "DUMMY", 2, getRandomColor()),
+    new Car(road.getLaneCenter(2), -1300, 30, 50, "DUMMY", 2, getRandomColor()),
+    new Car(road.getLaneCenter(0), -1300, 30, 50, "DUMMY", 2, getRandomColor())
+  );
+  cancelAnimationFrame(animationFrameId); // Cancel the previous animation frame
+  animationFrameId = requestAnimationFrame(animate); // Restart the animation with the new car count and predefined traffic
+}
+
+function resetSimulation() {
+  cars = generateCars(N);
+  bestCar = cars[0];
+  if (localStorage.getItem("bestBrain")) {
+    for (let i = 0; i < cars.length; i++) {
+      cars[i].brain = JSON.parse(localStorage.getItem("bestBrain"));
+      if (i != 0) {
+        NeuralNetwork.mutate(cars[i].brain, 0.1);
+      }
+    }
+  }
+  // Reset the traffic to the predefined traffic
+  traffic.length = 0;
+  traffic.push(
+    new Car(road.getLaneCenter(1), -100, 30, 50, "DUMMY", 2, getRandomColor()),
+    new Car(road.getLaneCenter(0), -300, 30, 50, "DUMMY", 2, getRandomColor()),
+    new Car(road.getLaneCenter(2), -300, 30, 50, "DUMMY", 2, getRandomColor()),
+    new Car(road.getLaneCenter(0), -500, 30, 50, "DUMMY", 2, getRandomColor()),
+    new Car(road.getLaneCenter(1), -500, 30, 50, "DUMMY", 2, getRandomColor()),
+    new Car(road.getLaneCenter(1), -700, 30, 50, "DUMMY", 2, getRandomColor()),
+    new Car(road.getLaneCenter(2), -700, 30, 50, "DUMMY", 2, getRandomColor()),
+    new Car(road.getLaneCenter(0), -900, 30, 50, "DUMMY", 2, getRandomColor()),
+    new Car(road.getLaneCenter(2), -900, 30, 50, "DUMMY", 2, getRandomColor()),
+    new Car(road.getLaneCenter(1), -1100, 30, 50, "DUMMY", 2, getRandomColor()),
+    new Car(road.getLaneCenter(2), -1100, 30, 50, "DUMMY", 2, getRandomColor()),
+    new Car(road.getLaneCenter(2), -1300, 30, 50, "DUMMY", 2, getRandomColor()),
+    new Car(road.getLaneCenter(0), -1300, 30, 50, "DUMMY", 2, getRandomColor())
+  );
+  cancelAnimationFrame(animationFrameId); // Cancel the previous animation frame
+  animationFrameId = requestAnimationFrame(animate); // Restart the animation with the new car count and predefined traffic
+}
+
+function addTraffic() {
+  console.log("Add Traffic button clicked");
+  const lanes = [0, 1, 2]; // Assuming 3 lanes
+  const newTraffic = [];
+  const yPositions = traffic.map((car) => car.y); // Get current y positions of traffic cars
+
+  console.log("Current y positions:", yPositions);
+
+  const y = Math.min(...yPositions) - 200; // Ensure new cars are at least -200 y+ from the current traffic
+  console.log(`New y position for new cars: ${y}`);
+
+  // Check if there are less than 2 cars at the same y position across all lanes
+  const carsAtSameY = traffic.filter((car) => car.y === y).length;
+  console.log(`Cars at y position ${y}: ${carsAtSameY}`);
+
+  if (carsAtSameY < 2) {
+    // Randomly decide to add 1 or 2 cars
+    const numCarsToAdd = Math.random() < 0.5 ? 1 : 2;
+    console.log(`Number of cars to add: ${numCarsToAdd}`);
+
+    // Shuffle lanes array to randomize lane selection
+    const shuffledLanes = lanes.sort(() => Math.random() - 0.5);
+
+    for (let i = 0; i < numCarsToAdd; i++) {
+      const laneIndex = shuffledLanes[i];
+      const carsInLaneAtSameY = traffic.filter(
+        (car) => car.x === road.getLaneCenter(laneIndex) && car.y === y
+      ).length;
+      console.log(
+        `Cars in lane ${laneIndex} at y position ${y}: ${carsInLaneAtSameY}`
+      );
+
+      if (carsInLaneAtSameY < 1) {
+        newTraffic.push(
+          new Car(
+            road.getLaneCenter(laneIndex),
+            y,
+            30,
+            50,
+            "DUMMY",
+            2,
+            getRandomColor()
+          )
+        );
+        console.log(`New car added in lane ${laneIndex} at y: ${y}`);
+      }
+    }
+  }
+
+  traffic.push(...newTraffic);
+  console.log("New traffic added:", newTraffic);
 }

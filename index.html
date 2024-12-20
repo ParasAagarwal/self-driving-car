@@ -1,16 +1,52 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>Self-driving car</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-  <canvas id="carCanvas"></canvas>
-  <div id="verticalButtons">
-    <button onclick="save()">💾</button>
-    <button onclick="discard()">🗑️</button>
+  <div class="container">
+    <canvas id="carCanvas" width="400" height="600"></canvas>
+    <div id="verticalButtons">
+      <h3>Traffic Control</h3>
+      <p>Add more traffic cars(randomly generated) to test the self-driving car's ability to navigate through obstacles.</p>
+      <button onclick="addTraffic()" title="Add more traffic cars">Add Traffic</button>
+
+      <h3>Model Training</h3>
+      <p>Save the best car's brain to improve the model over time(in case a car fails to navigate through traffic then save the best play of the alive car/ destroyed car). Discard the saved brain if you want to start fresh.
+      </p>
+      <button onclick="save()" title="Save the best car's brain">💾 Save</button>
+      <button onclick="discard()" title="Discard the saved best car's brain">🗑️ Delete</button>
+
+      <h3>Car Count</h3>
+      <p>Simulation of model learning by choosing the traffic and making your own bestCar through Trial and Error. Set the number of cars to train the model. This will reset the simulation with the specified number of cars.
+      </p>
+      <input type="number" id="carCount" min="1" max="100" value="1" title="Set the number of cars (1-100)">
+      <button onclick="updateCarCount()" title="Update the number of cars">Update Car Count</button>
+
+      <h3>Reset Simulation</h3>
+      <p>Reset the simulation if the car crashes or gets stuck.</p>
+      <button onclick="resetSimulation()" title="Reset the simulation">🔄 Reset</button>
+
+      <h3>Neural Network Simulation</h3>
+      <p>The neural network always shows the simulation of the bestCar decision flow and consists of three layers:</p>
+      <ul>
+        <li><strong>Input Layer:</strong> 5 neurons representing the 5 sensor readings. The neurons get darker as the
+          sensor gets closer to an object.</li>
+        <li><strong>Output Layer:</strong> 4 neurons representing the car's actions(decision making of the carBrain):
+          Forward (🠉), Left (🠈), Right
+          (🠊), and Backward (🠋).</li>
+        <li><strong>Middle Layer:</strong> 6 neurons representing the hidden layer of the neural network.</li>
+      </ul>
+      <p>The connections between neurons are weighted, and the weights are adjusted during training to improve the car's
+        performance.</p>
+
+
+    </div>
+    <canvas id="networkCanvas" width="400" height="600"></canvas>
   </div>
-  <canvas id="networkCanvas"></canvas>
   <script src="visualizer.js"></script>
   <script src="network.js"></script>
   <script src="sensor.js"></script>
@@ -20,5 +56,5 @@
   <script src="car.js"></script>
   <script src="main.js"></script>
 </body>
+
 </html>
-<!-- Using a <canvas> element allows for efficient and flexible rendering of graphics, which is ideal for creating dynamic and interactive visualizations -->
