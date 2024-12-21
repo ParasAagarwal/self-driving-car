@@ -1,5 +1,13 @@
 class Car {
-  constructor(x, y, width, height, controlType, maxSpeed = 3, color = "blue") {
+  constructor(
+    x,
+    y,
+    width,
+    height,
+    controlType,
+    maxSpeed = 3.35,
+    color = "blue"
+  ) {
     // Initialize car properties
     this.x = x;
     this.y = y;

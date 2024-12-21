@@ -9,26 +9,55 @@
 <body>
   <div class="container">
     <canvas id="carCanvas" width="400" height="600"></canvas>
+
     <div id="verticalButtons">
       <h3>Traffic Control</h3>
-      <p>Add more traffic cars(randomly generated) to test the self-driving car's ability to navigate through obstacles.</p>
+      <p>Add more traffic cars(randomly generated) to test the self-driving car's ability to navigate through obstacles.
+      </p>
       <button onclick="addTraffic()" title="Add more traffic cars">Add Traffic</button>
 
       <h3>Model Training</h3>
-      <p>Save the best car's brain to improve the model over time(in case a car fails to navigate through traffic then save the best play of the alive car/ destroyed car). Discard the saved brain if you want to start fresh.
+      <p>Save the best car's brain to improve the model over time(in case a car fails to navigate through traffic then
+        save the best play of the alive car/ destroyed car). Discard the saved brain if you want to start fresh.
       </p>
-      <button onclick="save()" title="Save the best car's brain">💾 Save</button>
-      <button onclick="discard()" title="Discard the saved best car's brain">🗑️ Delete</button>
+      <div>
 
-      <h3>Car Count</h3>
-      <p>Simulation of model learning by choosing the traffic and making your own bestCar through Trial and Error. Set the number of cars to train the model. This will reset the simulation with the specified number of cars.
-      </p>
-      <input type="number" id="carCount" min="1" max="100" value="1" title="Set the number of cars (1-100)">
-      <button onclick="updateCarCount()" title="Update the number of cars">Update Car Count</button>
+        <button onclick="save()" title="Save the best car's brain">💾 Save</button>
+        <button onclick="discard()" title="Discard the saved best car's brain">🗑️ Delete</button>
+      </div>
 
       <h3>Reset Simulation</h3>
       <p>Reset the simulation if the car crashes or gets stuck.</p>
       <button onclick="resetSimulation()" title="Reset the simulation">🔄 Reset</button>
+
+      <h3>Car Count</h3>
+      <p>Simulation of model learning by choosing the traffic and making your own bestCar through Trial and Error. Set
+        the
+        number of cars (1-100) to train the model also the variation in weights (0-1) with the bestCar. This will reset
+        the simulation
+        with the specified number of cars. Then follow
+        the steps for Model Training
+      </p>
+      <div>
+        <div>
+          <label for="carCount">Number of Cars:</label>
+          <input type="number" id="carCount" min="1" max="100" value="1" title="Set the number of cars (1-100)">
+        </div>
+        <div>
+          <label for="weightVariation">Weight Variation:</label>
+          <input type="number" id="weightVariation" min="0" max="1" step="0.01" value="0.1"
+            title="Set the weight variation (0-1)">
+        </div>
+      </div>
+      <button onclick="updateCarCount()" title="Update the number of cars">Update Car Count</button>
+
+      <h3>Lane Count</h3>
+      <p>Set the number of lanes for the road. This will reset the simulation with the specified number of lanes.</p>
+      <div>
+        <label for="laneCount">Number of Lanes:</label>
+        <input type="number" id="laneCount" min="1" max="5" value="3" title="Set the number of lanes (1-10)">
+      </div>
+      <button onclick="updateLaneCount()" title="Update the number of lanes">Update Lane Count</button>
 
       <h3>Neural Network Simulation</h3>
       <p>The neural network always shows the simulation of the bestCar decision flow and consists of three layers:</p>

@@ -18,7 +18,7 @@ class Road {
     this.borders = [
       [topLeft, bottomLeft],
       [topRight, bottomRight],
-    ];//defining the borders of the road
+    ]; //defining the borders of the road
   }
 
   getLaneCenter(laneIndex) {
