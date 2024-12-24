@@ -11,29 +11,25 @@
     <canvas id="carCanvas" width="400" height="600"></canvas>
 
     <div id="verticalButtons">
-      <h3>Traffic Control</h3>
-      <p>Add more traffic cars(randomly generated) to test the self-driving car's ability to navigate through obstacles.
-      </p>
-      <button onclick="addTraffic()" title="Add more traffic cars">Add Traffic</button>
 
-      <h3>Model Training</h3>
-      <p>Save the best car's brain to improve the model over time(in case a car fails to navigate through traffic then
-        save the best play of the alive car/ destroyed car). Discard the saved brain if you want to start fresh.
-      </p>
-      <div>
-
-        <button onclick="save()" title="Save the best car's brain">💾 Save</button>
-        <button onclick="discard()" title="Discard the saved best car's brain">🗑️ Delete</button>
-      </div>
-
-      <h3>Reset Simulation</h3>
-      <p>Reset the simulation if the car crashes or gets stuck.</p>
-      <button onclick="resetSimulation()" title="Reset the simulation">🔄 Reset</button>
+      <h3>Welcome to the Self-Driving Car Simulation</h3>
+      <p>This project simulates a self-driving car using a neural network. The car uses sensors to detect obstacles and makes
+        decisions based on the neural network's outputs. Initially, the car might not perform well, but through trial and
+        error, you can train the model to improve its performance.</p>
+      <p>Here's what you can do:</p>
+      <ul>
+        <li>Adjust the number of cars and the variation in weights to train the model.</li>
+        <li>Save the best car's brain if it performs well.</li>
+        <li>Discard the saved brain to start fresh.</li>
+        <li>Add more traffic to test the car's ability to navigate through obstacles.</li>
+        <li>Reset the simulation if the car crashes or gets stuck.</li>
+        <li>Change the number of lanes to see how the car adapts to different road conditions.</li>
+      </ul>
 
       <h3>Car Count</h3>
       <p>Simulation of model learning by choosing the traffic and making your own bestCar through Trial and Error. Set
         the
-        number of cars (1-100) to train the model also the variation in weights (0-1) with the bestCar. This will reset
+        number of cars (1-100) to train the model also the variation in weights (0-1) wrt the bestCar. This will reset
         the simulation
         with the specified number of cars. Then follow
         the steps for Model Training
@@ -51,6 +47,21 @@
       </div>
       <button onclick="updateCarCount()" title="Update the number of cars">Update Car Count</button>
 
+      <h3>Model Training</h3>
+      <p>Save the best car's brain to improve the model over time(in case a car fails to navigate through traffic then
+        save the best play of the alive car/ destroyed car). Discard the saved brain if you want to start fresh.
+      </p>
+      <div>
+
+        <button onclick="save()" title="Save the best car's brain">💾 Save</button>
+        <button onclick="discard()" title="Discard the saved best car's brain">🗑️ Delete</button>
+      </div>
+
+      <h3>Traffic Control</h3>
+      <p>Add more traffic cars(randomly generated) to test the self-driving car's ability to navigate through obstacles.
+      </p>
+      <button onclick="addTraffic()" title="Add more traffic cars">Add Traffic</button>
+
       <h3>Lane Count</h3>
       <p>Set the number of lanes for the road. This will reset the simulation with the specified number of lanes.</p>
       <div>
@@ -58,6 +69,10 @@
         <input type="number" id="laneCount" min="1" max="5" value="3" title="Set the number of lanes (1-10)">
       </div>
       <button onclick="updateLaneCount()" title="Update the number of lanes">Update Lane Count</button>
+
+      <h3>Reset Simulation</h3>
+      <p>Reset the simulation if the car crashes or gets stuck.</p>
+      <button onclick="resetSimulation()" title="Reset the simulation">🔄 Reset</button>
 
       <h3>Neural Network Simulation</h3>
       <p>The neural network always shows the simulation of the bestCar decision flow and consists of three layers:</p>

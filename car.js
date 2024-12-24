@@ -21,7 +21,7 @@ class Car {
     this.angle = 0; //avoiding direct left and right movement of car , instead it will rotate and move
     this.damaged = false;
 
-    this.useBrain = controlType == "AI"; //if the control type is AI then only we will use the brain
+    this.useBrain = controlType === "AI"; //if the control type is AI then only we will use the brain
 
     if (controlType != "DUMMY") {
       this.sensor = new Sensor(this);
