@@ -45,30 +45,6 @@ By using Canvas, we achieve:
 - **Real-Time Updates**: We can update the car's position, angle, and sensor readings in real-time, providing an interactive experience.
 - **Visualization of Complex Data**: The neural network's structure and activations are visualized on the canvas, helping users understand how the network processes sensor inputs and makes decisions.
 
-### Example Usage
-Here is an example of how we use the Canvas API to draw the car and its sensors:
-
-```javascript
-function drawCar(ctx, car) {
-  ctx.save();
-  ctx.translate(car.x, car.y);
-  ctx.rotate(-car.angle);
-  ctx.drawImage(car.img, -car.width / 2, -car.height / 2, car.width, car.height);
-  ctx.restore();
-}
-
-function drawSensors(ctx, sensors) {
-  sensors.forEach(sensor => {
-    ctx.beginPath();
-    ctx.moveTo(sensor.start.x, sensor.start.y);
-    ctx.lineTo(sensor.end.x, sensor.end.y);
-    ctx.stroke();
-  });
-}
-```
-
-In this example, the drawCar function uses the Canvas API to draw the car at its current position and angle. The drawSensors function draws the car's sensors as lines on the canvas.
-
 ## Use of AI/ML
 ### Neural Network
 The neural network is used to make decisions based on sensor inputs. It consists of multiple levels, each with a set of neurons. The network is trained using a simple mutation algorithm.
@@ -79,8 +55,60 @@ The neural network has an input layer, a hidden layer, and an output layer. The 
 #### Feedforward Propagation
 The feedforward propagation method propagates inputs through the network to produce outputs. Each neuron in a layer receives inputs from the previous layer, applies weights and biases, and passes the result through an activation function to produce an output.
 
-#### Mutation
-The mutation method randomly adjusts the weights and biases of the network to explore different behaviors. This is done by adding a small random value to each weight and bias, allowing the network to learn and adapt over time.
+1. **Inputs**: The inputs to the neural network are derived from the car's sensors. These sensors detect obstacles and provide readings that indicate the distance to the nearest obstacle. The sensor readings are normalized to a range between 0 and 1 by taking the `1 - offset` value of the sensor readings. The `offset` represents the distance to the obstacle, so `1 - offset` gives a value that is higher when the obstacle is closer.
+
+2. **Weights and Biases**: Each input is multiplied by a weight and summed up for each neuron in the next layer. A bias is added to the sum for each neuron. The weights and biases are initially randomized, allowing the neural network to explore a wide range of behaviors.
+
+3. **Activation Function**: An activation function (in this case, a simple threshold function) determines the output of each neuron. If the sum is greater than the bias, the output is 1; otherwise, it is 0.
+
+#### Mutation and Learning
+The neural network's performance is evaluated based on how well the car navigates the environment. After each simulation run, the neural network of the best-performing car is saved. The neural networks of other cars are mutated by slightly altering their weights and biases. This mutation introduces small changes that allow the network to explore new behaviors. The mutation is controlled by a parameter that determines the extent of the changes.
+
+1. **Mutation**: The `mutate` method randomly adjusts the weights and biases of the network to explore different behaviors. This is done by adding a small random value to each weight and bias, allowing the network to learn and adapt over time.
+
+2. **Selection**: The user can observe which sets of weights and biases result in better performance. By saving the best-performing neural network and mutating others, the simulation iteratively improves the car's ability to navigate the environment.
+
+### Flow of Neural Network Processing
+
+1. **Initialization**:
+   - The neural network is initialized with a specific structure, including an input layer, hidden layer(s), and an output layer.
+   - Weights and biases are randomized to allow the network to explore a wide range of behaviors.
+
+2. **Sensor Input**:
+   - The car's sensors detect obstacles and provide readings.
+   - These sensor readings are normalized to a range between 0 and 1 by taking the `1 - offset` value.
+
+3. **Feedforward Propagation**:
+   - The normalized sensor readings are fed into the input layer of the neural network.
+   - Each input is multiplied by a weight and summed up for each neuron in the next layer.
+   - A bias is added to the sum for each neuron.
+   - An activation function determines the output of each neuron.
+   - This process continues through all layers of the network until the final outputs are produced.
+
+4. **Decision Making**:
+   - The outputs of the neural network determine the car's actions (e.g., move forward, turn left, turn right, reverse).
+   - These actions are based on the processed sensor inputs and the current state of the network's weights and biases.
+
+5. **Evaluation**:
+   - The car's performance is evaluated based on how well it navigates the environment.
+   - The best-performing car's neural network is saved for future use.
+
+6. **Mutation**:
+   - The neural networks of other cars are mutated by slightly altering their weights and biases.
+   - This mutation introduces small changes that allow the network to explore new behaviors.
+   - The extent of the mutation is controlled by a parameter.
+
+7. **Iteration**:
+   - The simulation runs iteratively, with each generation of cars using the mutated neural networks.
+   - Over time, the neural network evolves to make better decisions based on the sensor inputs, leading to improved performance in navigating the environment.
+
+### Summary
+- **Inputs**: Sensor readings normalized to a range between 0 and 1.
+- **Weights and Biases**: Initially randomized and adjusted through mutation.
+- **Feedforward Propagation**: Inputs are processed through the network to produce outputs that control the car's actions.
+- **Mutation and Selection**: The best-performing networks are saved and used to generate new networks through mutation, allowing the model to learn and improve over time.
+
+This detailed flow explanation provides a clear understanding of how the neural network processes inputs, applies weights and biases, and how mutation and selection help improve the model over time. It complements the existing sections on feedforward propagation and mutation, providing a comprehensive overview of the neural network's role in the self-driving car simulation.
 
 ## Use of Mathematics
 ### Linear Interpolation (Lerp)
