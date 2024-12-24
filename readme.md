@@ -28,6 +28,9 @@ The motivation behind this project was to challenge myself to create an out-of-t
 - **Reset Simulation**: Users can reset the simulation if the car crashes or gets stuck.
 - **Neural Network Visualization**: The neural network's structure and activations are visualized on the canvas.
 
+## Car Image Creation
+The car image used in this project was created using PowerPoint. This allowed for a simple and customizable design that fits the needs of the simulation.
+
 ## Use of Canvas
 ### Aim
 The aim of using the HTML5 Canvas element in this project was to create a dynamic and interactive simulation environment. Canvas allows for efficient rendering of graphics and animations, making it ideal for visualizing the self-driving car's movements and the neural network's structure.
